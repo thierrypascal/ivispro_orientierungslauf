@@ -1,4 +1,4 @@
-# Orientierungslauf: Untersuchung auf Korrelation von Alter und Rang sowie die Entwicklung der Teilnehmerzahl nach Geschlecht.
+# Orientierungslauf visualisiert
 
 Student: Thierry Odermatt
 
