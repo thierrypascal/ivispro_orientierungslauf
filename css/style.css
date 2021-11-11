@@ -1,0 +1,34 @@
+.chart-container {
+    background: #fff;
+    border: 0;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+.chart-container h3 {
+    color: #111;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.svg-container {
+    width: 920px;
+    height: 460px;
+    margin: 0 auto;
+    position: relative;
+}
+
+#algTeilnehmerzahl {
+    height: inherit;
+    width: inherit;
+}
+
+#demografischeTeilnehmerzahl {
+    height: inherit;
+    width: inherit;
+}
