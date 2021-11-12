@@ -25,7 +25,12 @@
                 <h2>Orientierungslauf im Wandel?</h2>
                 <p>Einleitung zum Thema "Wie hat sich der OL über die Zeit verändert? Sind die Teilnahmen gestiegen? Hat sich nicht viel verändert? Sieht man Krisen?"</p>
                 <br>
+                <!-- TODO: make update() callable-->
                 <div class="chart-container">
+                    <div class="col">
+                        <button onclick="update(dataOfParticipants)">Teilnahmen</button>
+                        <button onclick="update(dataOfParticipations)">Teilnehmer</button>
+                    </div>
                     <div class="svg-container">
                         <svg id="algTeilnehmerzahl"></svg>
                     </div>
