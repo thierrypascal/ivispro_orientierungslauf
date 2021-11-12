@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             svg.append("path")
                 .datum(d)
                 .attr("fill", "none")
-                .attr("stroke", "steelblue")
+                .attr("stroke", "#004085")
                 .attr("stroke-width", 1.5)
                 .attr("d", d3.line()
                     .x(function (d) {
@@ -143,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .data(d)
                 .enter()
                 .append("circle")
+                .attr("fill", "#004085")
                 .attr("cx", function (d) {
                     return xScale(d.year)
                 })
@@ -161,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             svg.append("path")
                 .datum(dataOfParticipants)
                 .attr("fill", "none")
-                .attr("stroke", "steelblue")
+                .attr("stroke", "#850014")
                 .attr("stroke-width", 1.5)
                 .attr("d", d3.line()
                     .x(function (d) {
@@ -179,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .data(dataOfParticipants)
                 .enter()
                 .append("circle")
+                .attr("fill", "#850014")
                 .attr("cx", function (d) {
                     return xScale(d.year)
                 })
