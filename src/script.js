@@ -1,2 +1,2 @@
 import './algTeilnehmerzahl.js';
-import './demografischeTeilnehmerzahl.js';
+// import './demografischeTeilnehmerzahl.js';

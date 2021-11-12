@@ -1,4 +1,4 @@
-year,Kategorie,Laenge,Steigung,PoAnz,Rang,Name,Jahrgang,Ort,Club,Zeit
+year,category,distance,slope,pocount,rank,name,dob,place,club,time
 2008,HAL,5.5,220,41,1,Daniel Giger,70,Samedan,OLG Goldau,44:07:00
 2008,HAL,5.5,220,41,2,Florian Howald,91,Oberönz,OLG Herzogenbuchsee,47:06:00
 2008,HAL,5.5,220,41,3,Severin Howald,89,Oberönz,OLG Herzogenbuchsee,48:55:00
@@ -69,17 +69,17 @@ year,Kategorie,Laenge,Steigung,PoAnz,Rang,Name,Jahrgang,Ort,Club,Zeit
 2018,D50,5.4,55,13,3,Edith Strub,65,Itingen,OLV Baselland,56:49:00
 2020,HAL,4,200,15,34,Jonas Brütsch,98,Uhwiesen,OLG Schaffhausen,59:32:00
 2020,HAL,4,200,15,35,Lukas Hofer,96,Thun,OLG Thun,01:00:06
-2020,HAL,4,200,15,36,Mischa Lubasch,97,Meiringen,OLV Hindelbank,01:00:43
-2020,HAL,4,200,15,37,Gabriele Sabato,97,Castel San Pietro,SCOM Mendrisio,01:01:17
-2020,HAL,4,200,15,38,Demian Gander,95,Aathal-Seegräben,OLG Pfäffikon,01:01:31
-2020,HAL,4,200,15,39,Tim Franssen,97,Sursee,OLV Luzern,01:02:31
-2020,HAL,4,200,15,40,Jan Hug,92,Wädenswil,OL Zimmerberg,01:02:46
-2020,HAL,4,200,15,41,Damian Köpfli,91,Wolhusen,OLV Luzern / OL Zimmerberg,01:03:38
-2020,HAL,4,200,15,42,Michael Gasser,74,Horgen,OL Zimmerberg,01:03:53
-2020,HAL,4,200,15,43,Simon Hatt,92,Zürich,OL Zimmerberg,01:03:57
-2020,HAL,4,200,15,44,Luca Nembrini,95,Cadro,C.O. Aget Lugano,01:05:59
-2020,HAL,4,200,15,45,Philipp Zappa,90,Huttwil,OLG Huttwil,01:06:03
-2020,HAL,4,200,15,46,Johannes Iten,83,Steinhausen,OLC Winterthur,01:08:56
-2020,HAL,4,200,15,47,Michael Laager,91,Zürich,OL Zimmerberg,01:12:40
+2020,HAL,4,200,15,36,Thierry Odermatt,97,Meiringen,OLV Hindelbank,01:00:43
+2020,HAL,4,200,15,37,Thierry Odermatt,97,Castel San Pietro,SCOM Mendrisio,01:01:17
+2020,HAL,4,200,15,38,Thierry Odermatt,95,Aathal-Seegräben,OLG Pfäffikon,01:01:31
+2020,HAL,4,200,15,39,Thierry Odermatt,97,Sursee,OLV Luzern,01:02:31
+2020,HAL,4,200,15,40,Thierry Odermatt,92,Wädenswil,OL Zimmerberg,01:02:46
+2020,HAL,4,200,15,41,Thierry Odermatt,91,Wolhusen,OLV Luzern / OL Zimmerberg,01:03:38
+2020,HAL,4,200,15,42,Thierry Odermatt,74,Horgen,OL Zimmerberg,01:03:53
+2020,HAL,4,200,15,43,Thierry Odermatt,92,Zürich,OL Zimmerberg,01:03:57
+2020,HAL,4,200,15,44,Thierry Odermatt,95,Cadro,C.O. Aget Lugano,01:05:59
+2020,HAL,4,200,15,45,Thierry Odermatt,90,Huttwil,OLG Huttwil,01:06:03
+2020,HAL,4,200,15,46,Thierry Odermatt,83,Steinhausen,OLC Winterthur,01:08:56
+2020,HAL,4,200,15,47,Thierry Odermatt,91,Zürich,OL Zimmerberg,01:12:40
 2020,HAM,2.8,160,14,1,Leif Anderson,85,Bern,OLG Bern,36:28:00
 2020,HAM,2.8,160,14,2,Thomas Bucher,87,Solothurn,OLG Biberist SO,39:40:00
