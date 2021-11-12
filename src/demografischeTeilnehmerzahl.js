@@ -10,13 +10,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
             data.push(t[i]);
         }
 
+        //TODO: manipulate dob to get full year values, evt. through openrefine and regEx
         //get data for participations
         const dataOfParticipations2008 = Enumerable.from(data)
             .select(function (t) {
                 return {year: t.year, name: t.name, dob: t.dob};
             })
             .where(function (t) {
-                return t.year === "2020" && t.dob !== 9999;
+                return t.year === "2008" && t.dob !== "9999";
             })
             .groupBy(
                 function (t) {
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     return {dob: key, participations: grouping.count()};
                 }
             ).orderBy(function (t) {
-                return t.dob;
+                return parseInt(t.dob.toString(), 10);
             })
             .toArray();
 
@@ -52,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
         //init label
-        const xAxisLabel = 'Teilnehmer';
+        const xAxisLabel = 'Teilnehmer vom Jahr 2008';
         const yAxisLabel = 'Jahrgang';
 
         //set pixel range/scale
@@ -65,20 +66,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         //create x, y-Axis
         const xAxis = d3.axisBottom(xScale)
-            .ticks(20)
-            // .tickSize(-innerHeight)
+            .ticks(10)
             .tickFormat(d3.format("d"))
             .tickPadding(15);
 
         const yAxis = d3.axisLeft(yScale)
-            // .tickSize(-innerWidth)
             .tickPadding(10)
             .tickFormat(d3.format('d'))
 
 
         function update(d){
             //set data range
-            xScale.domain([0, 1200]);
+            xScale.domain(d3.extent(d, d => d.participations)).nice();
             yScale.domain(d.map(d => d.dob)).padding(.1);
 
             //set x, y-Axis
