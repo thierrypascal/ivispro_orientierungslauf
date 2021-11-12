@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //for each year, the amount of entries should be counted
     //for each year, the amount of individual participants should be counted
     const data = [];
-    d3.csv('./data/alleTeilnehmer_shortTest.csv').then((t) => {
+    d3.csv('./data/alleTeilnehmer.csv').then((t) => {
         for (let i = 0; i < t.length; i++) {
             data.push(t[i]);
         }
