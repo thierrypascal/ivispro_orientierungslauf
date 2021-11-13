@@ -25,11 +25,14 @@
                 <h2>Orientierungslauf im Wandel?</h2>
                 <p>Einleitung zum Thema "Wie hat sich der OL über die Zeit verändert? Sind die Teilnahmen gestiegen? Hat sich nicht viel verändert? Sieht man Krisen?"</p>
                 <br>
-                <!-- TODO: make update() callable-->
                 <div class="chart-container">
-                    <div class="col">
-                        <button onclick="update(dataOfParticipants)">Teilnahmen</button>
-                        <button onclick="update(dataOfParticipations)">Teilnehmer</button>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="options" id="updateParticipations" autocomplete="off" checked> Teilnahmen
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="options" id="updateParticipants" autocomplete="off"> Teilnehmer
+                        </label>
                     </div>
                     <div class="svg-container" style="height: 460px; width: 650px">
                         <svg id="algTeilnehmerzahl"></svg>
@@ -47,8 +50,8 @@
                 <br>
                 <div class="chart-container">
                     <div class="col">
-                        <button onclick="<!--TODO: funktion der animation starten-->">Start</button>
-                        <button onclick="<!--TODO: funktion der animation stoppen-->">Stopp</button>
+                        <button id="startAnimationDemograf" type="button" class="btn btn-success">Start</button>
+                        <button id="stopAnimationDemograf" type="button" class="btn btn-danger">Stopp</button>
                     </div>
                     <div class="svg-container" style="height: 1200px; width: 800px">
                         <svg id="demografischeTeilnehmerzahl"></svg>

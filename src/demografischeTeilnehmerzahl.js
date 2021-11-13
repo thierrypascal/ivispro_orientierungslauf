@@ -1,4 +1,6 @@
 import Enumerable from '../lib/linq.js-4.0.0/linq.js'
+let stopBtn = document.getElementById("stopAnimationDemograf");
+let startBtn = document.getElementById("startAnimationDemograf");
 
 document.addEventListener("DOMContentLoaded", function (event) {
     //create data
@@ -36,8 +38,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     return parseInt(t.dob.toString(), 10);
                 })
                 .toArray();
-
-            console.log(dataOfParticipations);
 
             //init label
             xAxisLabel = 'Teilnehmer vom Jahr ' + year;
@@ -129,17 +129,30 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .attr("fill", "#004085");
         }
 
-        const interval = window.setInterval(loadForEachYear, 5000);
+        //simple animation handling
+        let interval = window.setInterval(loadForEachYear, 5000);
         let year = 2008;
 
         function loadForEachYear() {
             if (year <= 2020) {
+                console.log("show data of year " + year);
                 loadDataOfYear(year.toString());
                 update(dataOfParticipations);
                 year += 1;
             } else {
                 year = 2008;
             }
+        }
+
+        startBtn.onclick = function () {
+            console.log("Animation started");
+            clearInterval(interval);
+            interval = window.setInterval(loadForEachYear, 5000);
+        }
+
+        stopBtn.onclick = function () {
+            console.log("Animation stopped");
+            clearInterval(interval);
         }
     });
 });
