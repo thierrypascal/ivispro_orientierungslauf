@@ -4,10 +4,12 @@ let startBtn = document.getElementById("startAnimationDemograf");
 
 document.addEventListener("DOMContentLoaded", function (event) {
     //create data
+    //TODO: add participants as subgroup of participations in stacked barplot
     //for each year, the amount of entries per birthdate should be counted
     //TODO: for each year, the amount of individual participants per birthday should be counted
     const data = [];
     let dataOfParticipations = [];
+    let subgroupDataOfParticipants = [];
     let xAxisLabel;
     let yAxisLabel;
     d3.csv('./data/alleTeilnehmer.csv').then((t) => {
@@ -40,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .toArray();
 
             //init label
-            xAxisLabel = 'Teilnehmer vom Jahr ' + year;
+            xAxisLabel = 'Teilnahmen von ' + year;
             yAxisLabel = 'Jahrgang';
         }
 
