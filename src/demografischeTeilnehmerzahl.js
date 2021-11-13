@@ -2,39 +2,47 @@ import Enumerable from '../lib/linq.js-4.0.0/linq.js'
 
 document.addEventListener("DOMContentLoaded", function (event) {
     //create data
-    //TODO: for each year, the amount of entries per birthdate should be counted
+    //for each year, the amount of entries per birthdate should be counted
     //TODO: for each year, the amount of individual participants per birthday should be counted
     const data = [];
+    let dataOfParticipations = [];
+    let xAxisLabel;
+    let yAxisLabel;
     d3.csv('./data/alleTeilnehmer.csv').then((t) => {
         for (let i = 0; i < t.length; i++) {
             data.push(t[i]);
         }
 
-        //TODO: manipulate dob to get full year values, evt. through openrefine and regEx
-        //get data for participations
-        const dataOfParticipations2008 = Enumerable.from(data)
-            .select(function (t) {
-                return {year: t.year, name: t.name, dob: t.dob};
-            })
-            .where(function (t) {
-                return t.year === "2008" && t.dob !== "9999";
-            })
-            .groupBy(
-                function (t) {
-                    return t.dob;
-                },
-                function (t) {
-                    return {name: t.name};
-                },
-                function (key, grouping) {
-                    return {dob: key, participations: grouping.count()};
-                }
-            ).orderBy(function (t) {
-                return parseInt(t.dob.toString(), 10);
-            })
-            .toArray();
+        function loadDataOfYear(year) {
+            //get data for participations
+            dataOfParticipations = Enumerable.from(data)
+                .select(function (t) {
+                    return {year: t.year, name: t.name, dob: t.dob};
+                })
+                .where(function (t) {
+                    return t.year === year && t.dob !== "9999";
+                })
+                .groupBy(
+                    function (t) {
+                        return t.dob;
+                    },
+                    function (t) {
+                        return {name: t.name};
+                    },
+                    function (key, grouping) {
+                        return {dob: key, participations: grouping.count()};
+                    }
+                ).orderBy(function (t) {
+                    return parseInt(t.dob.toString(), 10);
+                })
+                .toArray();
 
-        console.log(dataOfParticipations2008);
+            console.log(dataOfParticipations);
+
+            //init label
+            xAxisLabel = 'Teilnehmer vom Jahr ' + year;
+            yAxisLabel = 'Jahrgang';
+        }
 
         //construct graph
 
@@ -45,39 +53,38 @@ document.addEventListener("DOMContentLoaded", function (event) {
             innerWidth = width - margin.left - margin.right,
             innerHeight = height - margin.top - margin.bottom;
 
-        //append the svg object to the html body
-        const svg = d3.select('#demografischeTeilnehmerzahl')
-            .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + 20)
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        //init label
-        const xAxisLabel = 'Teilnehmer vom Jahr 2008';
-        const yAxisLabel = 'Jahrgang';
+        function update(d) {
+            //clear svg bevor redrawing
+            d3.selectAll("svg > *").remove();
 
-        //set pixel range/scale
-        let xScale = d3.scaleLinear().range([0, innerWidth]);
-        let yScale = d3.scaleBand().range([innerHeight, 0]);
+            //append the svg object to the html body
+            const svg = d3.select('#demografischeTeilnehmerzahl')
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + 20)
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-        const g = svg.append('g')
-            .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
+            //set pixel range/scale
+            let xScale = d3.scaleLinear().range([0, innerWidth]);
+            let yScale = d3.scaleBand().range([innerHeight, 0]);
 
-        //create x, y-Axis
-        const xAxis = d3.axisBottom(xScale)
-            .ticks(10)
-            .tickFormat(d3.format("d"))
-            .tickPadding(15);
+            const g = svg.append('g')
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
 
-        const yAxis = d3.axisLeft(yScale)
-            .tickPadding(10)
-            .tickFormat(d3.format('d'))
+            //create x, y-Axis
+            const xAxis = d3.axisBottom(xScale)
+                .ticks(10)
+                .tickFormat(d3.format("d"))
+                .tickPadding(15);
 
+            const yAxis = d3.axisLeft(yScale)
+                .tickPadding(10)
+                .tickFormat(d3.format('d'))
 
-        function update(d){
             //set data range
-            xScale.domain(d3.extent(d, d => d.participations)).nice();
+            xScale.domain([0, 3500]);
             yScale.domain(d.map(d => d.dob)).padding(.1);
 
             //set x, y-Axis
@@ -101,14 +108,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .text(xAxisLabel);
 
             //bind data to graph
+            var u = svg.selectAll("rect").data(d);
+
             //create bars of participations
-            svg.selectAll("rect")
-                .data(d)
-                .enter()
+            u.enter()
                 .append("rect")
-                .attr("x", xScale(0) )
-                .attr("y", function(d) { return yScale(d.dob); })
-                .attr("width", function(d) { return xScale(d.participations); })
+                .merge(u)
+                .transition()
+                .duration(1000)
+                .attr("x", xScale(0))
+                .attr("y", function (d) {
+                    return yScale(d.dob);
+                })
+                .attr("width", function (d) {
+                    return xScale(d.participations);
+                })
                 .attr("height", yScale.bandwidth())
                 //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
                 .attr('transform', 'translate(' + 60 + ',' + 10 + ')')
@@ -119,6 +133,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
             //TODO: change color per dataset
         }
 
-        update(dataOfParticipations2008);
+        const interval = window.setInterval(loadForEachYear, 4000);
+        let year = 2008;
+
+        function loadForEachYear() {
+            if (year <= 2020) {
+                loadDataOfYear(year.toString());
+                update(dataOfParticipations);
+                year += 1;
+            } else {
+                year = 2008;
+            }
+        }
     });
 });
