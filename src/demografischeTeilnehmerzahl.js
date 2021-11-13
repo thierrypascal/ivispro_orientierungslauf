@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         function update(d) {
             //clear svg bevor redrawing
-            d3.selectAll("svg > *").remove();
+            d3.selectAll("#demografischeTeilnehmerzahl > *").remove();
 
             //append the svg object to the html body
             const svg = d3.select('#demografischeTeilnehmerzahl')
@@ -127,13 +127,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
                 .attr('transform', 'translate(' + 60 + ',' + 10 + ')')
                 .attr("fill", "#004085");
-
-            //TODO: remove second line as soon as update() call works
-            //TODO: update axis range together with data
-            //TODO: change color per dataset
         }
 
-        const interval = window.setInterval(loadForEachYear, 4000);
+        const interval = window.setInterval(loadForEachYear, 5000);
         let year = 2008;
 
         function loadForEachYear() {
