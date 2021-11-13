@@ -1,4 +1,5 @@
 import Enumerable from '../lib/linq.js-4.0.0/linq.js'
+
 let stopBtn = document.getElementById("stopAnimationDemograf");
 let startBtn = document.getElementById("startAnimationDemograf");
 
@@ -109,12 +110,50 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .attr('fill', 'black')
                 .text(xAxisLabel);
 
+            // create a tooltip
+            var Tooltip = d3.select("#demografischeTeilnehmerzahl")
+                .append("div")
+                .style("opacity", 0)
+                .attr("class", "tooltip")
+                .style("background-color", "white")
+                .style("border", "solid")
+                .style("border-width", "2px")
+                .style("border-radius", "5px")
+                .style("padding", "5px")
+
+            //TODO: make tooltips work
+            // Three function that change the tooltip when user hover / move / leave a cell
+            var mouseover = function (d) {
+                Tooltip
+                    .style("opacity", 1)
+                d3.select(this)
+                    .style("stroke", "black")
+                    .style("opacity", 1)
+            }
+            var mousemove = function (d) {
+                Tooltip
+                    .html("The exact value of<br>this cell is: " + d.value)
+                    .style("top", d3.select(this).attr("y") + "px")
+                    .style("left", d3.select(this).attr("x") + "px")
+                console.log(d.value)
+            }
+            var mouseleave = function (d) {
+                Tooltip
+                    .style("opacity", 0)
+                d3.select(this)
+                    .style("stroke", "none")
+                    .style("opacity", 0.8)
+            }
+
             //bind data to graph
             var u = svg.selectAll("rect").data(d);
 
             //create bars of participations
             u.enter()
                 .append("rect")
+                .on("mouseover", mouseover)
+                .on("mousemove", mousemove)
+                .on("mouseleave", mouseleave)
                 .merge(u)
                 .transition()
                 .duration(1000)
