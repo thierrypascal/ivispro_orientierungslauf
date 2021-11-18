@@ -1,3 +1,16 @@
+
+.hypothesis {
+    margin-left: 2rem;
+    font-size: x-large;
+    color: orangered;
+    font-style: italic;
+}
+
+strong.result {
+    color: orangered;
+    font-style: italic;
+}
+
 .chart-container {
     background: #fff;
     border: 0;

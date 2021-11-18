@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         uParticipants.onclick = function () {
             console.log("load Participants");
-            update(dataOfParticipants, 'Teilnehmer');
+            update(dataOfParticipants, 'Teilnehmende');
         }
     });
 });
