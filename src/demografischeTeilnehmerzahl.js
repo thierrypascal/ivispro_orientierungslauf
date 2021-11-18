@@ -5,9 +5,8 @@ let startBtn = document.getElementById("startAnimationDemograf");
 
 document.addEventListener("DOMContentLoaded", function (event) {
     //create data
-    //TODO: add participants as subgroup of participations in stacked barplot
     //for each year, the amount of entries per birthdate should be counted
-    //TODO: for each year, the amount of individual participants per birthday should be counted
+    //for each year, the amount of individual participants per birthday should be counted
     const data = [];
     let dataOfParticipations = [];
     let subgroupDataOfParticipants = [];
@@ -42,8 +41,34 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 })
                 .toArray();
 
+            //get data for participations
+            subgroupDataOfParticipants = Enumerable.from(data)
+                .select(function (t) {
+                    return {year: t.year, name: t.name, dob: t.dob};
+                })
+                .where(function (t) {
+                    return t.year === year && t.dob !== "9999";
+                })
+                .distinct(function (t) {
+                    return t.year + t.name
+                })
+                .groupBy(
+                    function (t) {
+                        return t.dob;
+                    },
+                    function (t) {
+                        return {name: t.name};
+                    },
+                    function (key, grouping) {
+                        return {dob: key, p: grouping.count()};
+                    }
+                ).orderBy(function (t) {
+                    return parseInt(t.dob.toString(), 10);
+                })
+                .toArray();
+
+
             //init label
-            xAxisLabel = 'Teilnahmen von ' + year;
             yAxisLabel = 'Jahrgang';
         }
 
@@ -57,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             innerHeight = height - margin.top - margin.bottom;
 
 
-        function update(d) {
+        function update(mainDataSet, subgroupDataSet) {
             //clear svg bevor redrawing
             d3.selectAll("#demografischeTeilnehmerzahl > *").remove();
             d3.selectAll("#ttdemografischeTeilnehmerzahl > *").remove();
@@ -89,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
             //set data range
             xScale.domain([0, 3500]);
-            yScale.domain(d.map(d => d.dob)).padding(.1);
+            yScale.domain(mainDataSet.map(d => d.dob)).padding(.1);
 
             //set x, y-Axis
             const yAxisG = g.append('g').call(yAxis);
@@ -102,14 +127,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .attr('text-anchor', 'middle')
                 .text(yAxisLabel);
 
-            const xAxisG = g.append('g').call(xAxis)
+            g.append('g').call(xAxis)
                 .attr('transform', `translate(0,${innerHeight})`);
-            xAxisG.append('text')
-                .attr('class', 'axis-label')
-                .attr('y', 40)
-                .attr('x', innerWidth / 2)
-                .attr('fill', 'black')
-                .text(xAxisLabel);
 
             // create a tooltip
             var Tooltip = d3.select("#ttdemografischeTeilnehmerzahl")
@@ -126,36 +145,57 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 Tooltip
                     .style("opacity", 1)
             }
-            const mousemove = function (event, d) {
+            const mousemoveMain = function (event, d) {
                 Tooltip
                     .html("Teilnahmen: " + d.p + "<br>" + "Jahrgang: " + d.dob)
                     .style("left", `${event.pageX + 10}px`)
                     .style("top", `${event.pageY}px`)
+                    .style("border-color", "#004085")
+            }
+            const mousemoveSub = function (event, d) {
+                Tooltip
+                    .html("Teilnehmende: " + d.p + "<br>" + "Jahrgang: " + d.dob)
+                    .style("left", `${event.pageX + 10}px`)
+                    .style("top", `${event.pageY}px`)
+                    .style("border-color", "#ff1b2e")
             }
             const mouseleave = function (event, d) {
                 Tooltip
                     .style("opacity", 0)
             }
 
+
             //bind data to graph
             svg.selectAll("rect")
-                .data(d)
+                .data(mainDataSet)
                 .enter()
                 .append("rect")
                 .attr("x", xScale(0))
-                .attr("y", function (d) {
-                    return yScale(d.dob);
-                })
-                .attr("width", function (d) {
-                    return xScale(d.p);
-                })
+                .attr("y", d => yScale(d.dob))
+                .attr("width", d => xScale(d.p))
                 .attr("height", yScale.bandwidth())
                 .on("mouseover", mouseover)
-                .on("mousemove", mousemove)
+                .on("mousemove", mousemoveMain)
                 .on("mouseleave", mouseleave)
                 //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
                 .attr('transform', 'translate(' + 60 + ',' + 10 + ')')
                 .attr("fill", "#004085");
+
+            svg.append("g")
+                .selectAll("rect")
+                .data(subgroupDataSet)
+                .enter()
+                .append("rect")
+                .attr("x", xScale(0))
+                .attr("y", d => yScale(d.dob))
+                .attr("width", d => xScale(d.p))
+                .attr("height", yScale.bandwidth())
+                .on("mouseover", mouseover)
+                .on("mousemove", mousemoveSub)
+                .on("mouseleave", mouseleave)
+                //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
+                .attr('transform', 'translate(' + 60 + ',' + 10 + ')')
+                .attr("fill", "#ff1b2e");
         }
 
         //simple animation handling
@@ -166,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             if (year <= 2020) {
                 console.log("show data of year " + year);
                 loadDataOfYear(year.toString());
-                update(dataOfParticipations);
+                update(dataOfParticipations, subgroupDataOfParticipants);
                 year += 1;
             } else {
                 year = 2008;
