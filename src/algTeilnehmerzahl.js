@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
             //set x, y-Axis
             const yAxisG = g.append('g').call(yAxis);
+            //add label
             yAxisG.selectAll('.domain').remove();
             yAxisG.append('text')
                 .attr('class', 'axis-label')
@@ -117,6 +118,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
             const xAxisG = g.append('g').call(xAxis)
                 .attr('transform', `translate(0,${innerHeight})`);
+            //add label
             xAxisG.select('.domain').remove();
             xAxisG.append('text')
                 .attr('class', 'axis-label')
@@ -127,41 +129,60 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
             //bind data to graph
             //create line of participations
-            var u = svg.append("path").datum(d);
-
-            u.merge(u)
-                .transition()
-                .duration(1000)
+            svg.append("path").datum(d)
                 .attr("fill", "none")
-                .attr("stroke", "#004085")
-                .attr("stroke-width", 1.5)
+                .attr("stroke", "#5091ff")
+                .attr("stroke-width", 3)
                 .attr("d", d3.line()
-                    .x(function (d) {
-                        return xScale(d.year)
-                    })
-                    .y(function (d) {
-                        return yScale(d.p)
-                    })
+                    .curve(d3.curveBasis)
+                    .x(d => xScale(d.year))
+                    .y(d => yScale(d.p))
                 )
                 //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
                 .attr('transform', 'translate(' + 30 + ',' + 10 + ')');
 
-            //create dots of participations
-            var ud = svg.selectAll("dot").data(d);
+            // create a tooltip
+            var Tooltip = d3.select("#ttAlgTeilnehmerzahl")
+                .append("div")
+                .attr("class", "tooltip")
+                .style("background-color", "white")
+                .style("border", "solid")
+                .style("border-width", "2px")
+                .style("border-radius", "5px")
+                .style("padding", "5px")
 
-            ud.enter()
+            // Three function that change the tooltip when user hover / move / leave a cell
+            const mouseover = function (event, d) {
+                Tooltip
+                    .style("opacity", 1)
+            }
+            const mousemove = function (event, d) {
+                Tooltip
+                    .html(yTitle + ": " + d.p + "<br>" + "Jahr: " + d.year)
+                    .style("left", `${event.pageX + 10}px`)
+                    .style("top", `${event.pageY}px`)
+            }
+            const mouseleave = function (event, d) {
+                Tooltip
+                    .style("opacity", 0)
+            }
+
+            // Add the points
+            svg.append("g")
+                .selectAll("dot")
+                .data(d)
+                .enter()
                 .append("circle")
-                .merge(u)
-                .transition()
-                .duration(1000)
-                .attr("fill", "#004085")
-                .attr("cx", function (d) {
-                    return xScale(d.year)
-                })
-                .attr("cy", function (d) {
-                    return yScale(d.p)
-                })
+                .attr("class", "myCircle")
+                .attr("cx", d => xScale(d.year))
+                .attr("cy", d => yScale(d.p))
                 .attr("r", 4)
+                .attr("stroke", "#2253ad")
+                .attr("stroke-width", 2)
+                .attr("fill", "white")
+                .on("mouseover", mouseover)
+                .on("mousemove", mousemove)
+                .on("mouseleave", mouseleave)
                 //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
                 .attr('transform', 'translate(' + 30 + ',' + 10 + ')');
         }
