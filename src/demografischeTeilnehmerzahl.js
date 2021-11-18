@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         return {name: t.name};
                     },
                     function (key, grouping) {
-                        return {dob: key, participations: grouping.count()};
+                        return {dob: key, p: grouping.count()};
                     }
                 ).orderBy(function (t) {
                     return parseInt(t.dob.toString(), 10);
@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         function update(d) {
             //clear svg bevor redrawing
             d3.selectAll("#demografischeTeilnehmerzahl > *").remove();
+            d3.selectAll("#ttdemografischeTeilnehmerzahl > *").remove();
 
             //append the svg object to the html body
             const svg = d3.select('#demografischeTeilnehmerzahl')
@@ -111,9 +112,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .text(xAxisLabel);
 
             // create a tooltip
-            var Tooltip = d3.select("#demografischeTeilnehmerzahl")
+            var Tooltip = d3.select("#ttdemografischeTeilnehmerzahl")
                 .append("div")
-                .style("opacity", 0)
                 .attr("class", "tooltip")
                 .style("background-color", "white")
                 .style("border", "solid")
@@ -121,50 +121,38 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .style("border-radius", "5px")
                 .style("padding", "5px")
 
-            //TODO: make tooltips work
             // Three function that change the tooltip when user hover / move / leave a cell
-            var mouseover = function (d) {
+            const mouseover = function (event, d) {
                 Tooltip
                     .style("opacity", 1)
-                d3.select(this)
-                    .style("stroke", "black")
-                    .style("opacity", 1)
             }
-            var mousemove = function (d) {
+            const mousemove = function (event, d) {
                 Tooltip
-                    .html("The exact value of<br>this cell is: " + d.value)
-                    .style("top", d3.select(this).attr("y") + "px")
-                    .style("left", d3.select(this).attr("x") + "px")
-                console.log(d.value)
+                    .html("Teilnahmen: " + d.p + "<br>" + "Jahrgang: " + d.dob)
+                    .style("left", `${event.pageX + 10}px`)
+                    .style("top", `${event.pageY}px`)
             }
-            var mouseleave = function (d) {
+            const mouseleave = function (event, d) {
                 Tooltip
                     .style("opacity", 0)
-                d3.select(this)
-                    .style("stroke", "none")
-                    .style("opacity", 0.8)
             }
 
             //bind data to graph
-            var u = svg.selectAll("rect").data(d);
-
-            //create bars of participations
-            u.enter()
+            svg.selectAll("rect")
+                .data(d)
+                .enter()
                 .append("rect")
-                .on("mouseover", mouseover)
-                .on("mousemove", mousemove)
-                .on("mouseleave", mouseleave)
-                .merge(u)
-                .transition()
-                .duration(1000)
                 .attr("x", xScale(0))
                 .attr("y", function (d) {
                     return yScale(d.dob);
                 })
                 .attr("width", function (d) {
-                    return xScale(d.participations);
+                    return xScale(d.p);
                 })
                 .attr("height", yScale.bandwidth())
+                .on("mouseover", mouseover)
+                .on("mousemove", mousemove)
+                .on("mouseleave", mouseleave)
                 //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
                 .attr('transform', 'translate(' + 60 + ',' + 10 + ')')
                 .attr("fill", "#004085");
