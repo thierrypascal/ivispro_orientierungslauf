@@ -4,35 +4,42 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //create data
     //for each year, each participant should have a line showing the amount of participations per year
     const data = [];
-    const dataOfParticipants = [];
-    d3.csv('./data/alleTeilnehmer.csv').then((t) => {
+    d3.csv('./data/alleTeilnehmer_shortTest.csv').then((t) => {
         for (let i = 0; i < t.length; i++) {
             data.push(t[i]);
         }
 
         //get data for participations
-        //TODO
         //Welche Datenstruktur wird benötigt?
-        //[[name [{year: 2008, p: y}, {year: 2009, p: y}, ...]], ...]
-        dataOfParticipants.push(Enumerable.from(data)
+        //[name: name, ppY: [{year: 2008, p: y}, {year: 2009, p: y}, ...]], ...]
+        const slimData = (Enumerable.from(data)
             .select(function (t) {
                 return {name: t.name, year: t.year, dob: t.dob};
             })
-            .orderBy(function (t) {
+            .toArray());
+
+        const dataOfParticipants = (Enumerable.from(slimData)
+            .distinct(function (t) {
+                return t.name
+            })
+            .select(function (t) {
+                return {
+                    name: t.name, dob: t.dob, ppY: Enumerable.from(slimData)
+                        .where(n => n.name === t.name)
+                        .groupBy(
+                            function (t) {
+                                return t.year;
+                            },
+                            function (t) {
+                                return {name: t.name};
+                            },
+                            function (key, grouping) {
+                                return {year: key, p: grouping.count()};
+                            }).toArray()
+                }
+            }).orderBy(function (t) {
                 return parseInt(t.dob.toString(), 10);
             })
-            //TODO: verschachtelte Abfrage mit Select(new) um gewünschte Struktur zu erstellen
-            .groupBy(
-                function (t) {
-                    return t.name;
-                },
-                function (t) {
-                    return {name: t.name};
-                },
-                function (key, grouping) {
-                    return {name: key, p: grouping.count()};
-                }
-            )
             .toArray());
 
         console.log(dataOfParticipants);
@@ -55,13 +62,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         //init label
         const xAxisLabel = 'Jahr';
-        const yAxisLabelLeft = 'Person, Jahrgang abnehmend';
+        const yAxisLabelLeft = 'Teilnehmer:in, Jahrgang abnehmend';
         const yAxisLabelRight = 'Anzahl Teilnahmen';
 
         //set pixel range/scale
         let xScale = d3.scaleTime().range([0, innerWidth]);
-        let yScaleLeft = d3.scaleLinear().range([innerHeight, 0]);
         let yScaleRight = d3.scaleLinear().range([innerHeight, 0]);
+        let yScaleLeft = d3.scaleLinear().range([innerHeight, 0]);
 
         const g = svg.append('g')
             .attr("transform",
@@ -74,27 +81,45 @@ document.addEventListener("DOMContentLoaded", function (event) {
             .tickFormat(d3.format("d"))
             .tickPadding(15);
 
-        const yAxis = d3.axisRight(yScaleRight)
+        const yAxisRight = d3.axisRight(yScaleRight)
+            .tickSize(-innerWidth)
+            .tickPadding(10)
+            .tickFormat(d3.format('d'))
+
+        const yAxisLeft = d3.axisRight(yScaleLeft)
             .tickSize(-innerWidth)
             .tickPadding(10)
             .tickFormat(d3.format('d'))
 
         //set data range
         xScale.domain([2008, 2020]);
-        yScaleRight.domain(d3.extent(dataOfParticipants, t => t.p)).nice();
+        yScaleRight.domain([0, 100]);
+        yScaleLeft.domain(dataOfParticipants.map(d => d.name));
 
         //set x, y-Axis
-        const yAxisG = g.append('g').call(yAxis);
+        const yAxisGRight = g.append('g').call(yAxisRight).attr('transform', `translate(${width - 70}, 0)`);
         //add label
-        yAxisG.selectAll('.domain').remove();
-        yAxisG.append('text')
+        yAxisGRight.selectAll('.domain').remove();
+        yAxisGRight.append('text')
+            .attr('class', 'axis-label')
+            .attr('y', 45)
+            .attr('x', -innerHeight / 2)
+            .attr('fill', 'black')
+            .attr('transform', `rotate(-90)`)
+            .attr('text-anchor', 'middle')
+            .text(yAxisLabelRight);
+
+        const yAxisGLeft = g.append('g').call(yAxisLeft);
+        //add label
+        yAxisGLeft.selectAll('.domain').remove();
+        yAxisGLeft.append('text')
             .attr('class', 'axis-label')
             .attr('y', -45)
             .attr('x', -innerHeight / 2)
             .attr('fill', 'black')
             .attr('transform', `rotate(-90)`)
             .attr('text-anchor', 'middle')
-            .text(yAxisLabelRight);
+            .text(yAxisLabelLeft);
 
         const xAxisG = g.append('g').call(xAxis)
             .attr('transform', `translate(0,${innerHeight})`);
@@ -109,17 +134,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         //bind data to graph
         //create line of participations
-        svg.append("path").datum(dataOfParticipants)
-            .attr("fill", "none")
-            .attr("stroke", "#5091ff")
-            .attr("stroke-width", 3)
-            .attr("d", d3.line()
-                .curve(d3.curveBasis)
-                .x(d => xScale(d.year))
-                .y(d => yScaleRight(d.p))
-            )
-            //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
-            .attr('transform', 'translate(' + 30 + ',' + 10 + ')');
-
+        //TODO: konzept überdenken, pro person eine linie/eine scatter group, wie werden diese über die Höhe unterschieden?
+        dataOfParticipants.forEach(function (d) {
+            svg.append("circle")
+                .attr("cx", xScale(d.ppY[0].year))
+                .attr("cy", yScaleRight(d.ppY[0].p))
+                .attr("r", 5)
+                //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
+                .attr('transform', 'translate(' + 30 + ',' + 10 + ')');
+        });
     });
 });
