@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //for each year, the amount of entries should be counted
     //for each year, the amount of individual participants should be counted
     const data = [];
-    d3.csv('./data/alleTeilnehmer.csv').then((t) => {
+    //Daten werden aus vorbereitetem csv geladen, nicht direkt aus der Hauptquelle
+    d3.csv('./data/algTeilnehmerzahl.csv').then((t) => {
         for (let i = 0; i < t.length; i++) {
             data.push(t[i]);
         }
@@ -16,46 +17,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
         //get data for participations
         const dataOfParticipations = Enumerable.from(data)
             .select(function (t) {
-                return {year: t.year, name: t.name};
+                return {year: t.year, participations: t.participations};
             })
-            .groupBy(
-                function (t) {
-                    return t.year;
-                },
-                function (t) {
-                    return {name: t.name};
-                },
-                function (key, grouping) {
-                    return {year: key, p: grouping.count()};
-                }
-            )
             .toArray();
-
 
         //get data for participants
         const dataOfParticipants = Enumerable.from(data)
             .select(function (t) {
-                return {year: t.year, name: t.name};
+                return {year: t.year, participants: t.participants};
             })
-            .distinct(function (t) {
-                return t.year + t.name
-            })
-            .groupBy(
-                function (t) {
-                    return t.year;
-                },
-                function (t) {
-                    return {name: t.name};
-                },
-                function (key, grouping) {
-                    return {year: key, p: grouping.count()};
-                }
-            )
             .toArray();
 
-
         //construct graph
-
         //set dimensions and margin of the graph
         const margin = {top: 10, right: 40, bottom: 20, left: 30},
             width = 650 - margin.left - margin.right,
@@ -63,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             innerWidth = width - margin.left - margin.right,
             innerHeight = height - margin.top - margin.bottom;
 
-        function update(d, yTitle) {
+        function update(d, yTitle, isParticipations) {
             //clear svg bevor redrawing
             d3.selectAll("#algTeilnehmerzahl > *").remove();
 
@@ -101,7 +74,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
             //set data range
             xScale.domain([2008, 2020]);
-            yScale.domain(d3.extent(d, t => t.p)).nice();
+            if (isParticipations){
+                yScale.domain([0, 100000]).nice();
+            }else{
+                yScale.domain([0, 15000]).nice();
+            }
 
             //set x, y-Axis
             const yAxisG = g.append('g').call(yAxis);
@@ -129,17 +106,31 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
             //bind data to graph
             //create line of participations
-            svg.append("path").datum(d)
-                .attr("fill", "none")
-                .attr("stroke", "#5091ff")
-                .attr("stroke-width", 3)
-                .attr("d", d3.line()
-                    .curve(d3.curveBasis)
-                    .x(d => xScale(d.year))
-                    .y(d => yScale(d.p))
-                )
-                //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
-                .attr('transform', 'translate(' + 30 + ',' + 10 + ')');
+            if (isParticipations){
+                svg.append("path").datum(d)
+                    .attr("fill", "none")
+                    .attr("stroke", "#5091ff")
+                    .attr("stroke-width", 3)
+                    .attr("d", d3.line()
+                        .curve(d3.curveBasis)
+                        .x(d => xScale(d.year))
+                        .y(d => yScale(d.participations))
+                    )
+                    //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
+                    .attr('transform', 'translate(' + 30 + ',' + 10 + ')');
+            }else{
+                svg.append("path").datum(d)
+                    .attr("fill", "none")
+                    .attr("stroke", "#5091ff")
+                    .attr("stroke-width", 3)
+                    .attr("d", d3.line()
+                        .curve(d3.curveBasis)
+                        .x(d => xScale(d.year))
+                        .y(d => yScale(d.participants))
+                    )
+                    //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
+                    .attr('transform', 'translate(' + 30 + ',' + 10 + ')');
+            }
 
             // create a tooltip
             var Tooltip = d3.select("#ttAlgTeilnehmerzahl")
@@ -157,10 +148,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     .style("opacity", 1)
             }
             const mousemove = function (event, d) {
-                Tooltip
-                    .html(yTitle + ": " + d.p + "<br>" + "Jahr: " + d.year)
-                    .style("left", `${event.pageX + 10}px`)
-                    .style("top", `${event.pageY}px`)
+                if (isParticipations){
+                    Tooltip
+                        .html(yTitle + ": " + d.participations + "<br>" + "Jahr: " + d.year)
+                        .style("left", `${event.pageX + 10}px`)
+                        .style("top", `${event.pageY}px`)
+                }else{
+                    Tooltip
+                        .html(yTitle + ": " + d.participants + "<br>" + "Jahr: " + d.year)
+                        .style("left", `${event.pageX + 10}px`)
+                        .style("top", `${event.pageY}px`)
+                }
             }
             const mouseleave = function (event, d) {
                 Tooltip
@@ -168,35 +166,55 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
 
             // Add the points
-            svg.append("g")
-                .selectAll("dot")
-                .data(d)
-                .enter()
-                .append("circle")
-                .attr("class", "myCircle")
-                .attr("cx", d => xScale(d.year))
-                .attr("cy", d => yScale(d.p))
-                .attr("r", 4)
-                .attr("stroke", "#2253ad")
-                .attr("stroke-width", 2)
-                .attr("fill", "white")
-                .on("mouseover", mouseover)
-                .on("mousemove", mousemove)
-                .on("mouseleave", mouseleave)
-                //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
-                .attr('transform', 'translate(' + 30 + ',' + 10 + ')');
+            if (isParticipations){
+                svg.append("g")
+                    .selectAll("dot")
+                    .data(d)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "myCircle")
+                    .attr("cx", d => xScale(d.year))
+                    .attr("cy", d => yScale(d.participations))
+                    .attr("r", 4)
+                    .attr("stroke", "#2253ad")
+                    .attr("stroke-width", 2)
+                    .attr("fill", "white")
+                    .on("mouseover", mouseover)
+                    .on("mousemove", mousemove)
+                    .on("mouseleave", mouseleave)
+                    //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
+                    .attr('transform', 'translate(' + 30 + ',' + 10 + ')');
+            }else{
+                svg.append("g")
+                    .selectAll("dot")
+                    .data(d)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "myCircle")
+                    .attr("cx", d => xScale(d.year))
+                    .attr("cy", d => yScale(d.participants))
+                    .attr("r", 4)
+                    .attr("stroke", "#2253ad")
+                    .attr("stroke-width", 2)
+                    .attr("fill", "white")
+                    .on("mouseover", mouseover)
+                    .on("mousemove", mousemove)
+                    .on("mouseleave", mouseleave)
+                    //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
+                    .attr('transform', 'translate(' + 30 + ',' + 10 + ')');
+            }
         }
 
-        update(dataOfParticipations, 'Teilnahmen');
+        update(dataOfParticipations, 'Teilnahmen', true);
 
         uParticipations.onclick = function () {
             console.log("load Participations");
-            update(dataOfParticipations, 'Teilnahmen');
+            update(dataOfParticipations, 'Teilnahmen', true);
         }
 
         uParticipants.onclick = function () {
             console.log("load Participants");
-            update(dataOfParticipants, 'Teilnehmende');
+            update(dataOfParticipants, 'Teilnehmende', false);
         }
     });
 });

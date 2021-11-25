@@ -67,9 +67,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 })
                 .toArray();
 
-
             //init label
             yAxisLabel = 'Jahrgang';
+            xAxisLabel = 'Teilnehmer:innen (Rot) / Teilnahmen (blau) im Jahr ' + year;
         }
 
         //construct graph
@@ -126,6 +126,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .attr('transform', `rotate(-90)`)
                 .attr('text-anchor', 'middle')
                 .text(yAxisLabel);
+
+            const xAxisG = g.append('g').call(xAxis)
+                .attr('transform', `translate(0,${innerHeight})`);
+            //add label
+            xAxisG.select('.domain').remove();
+            xAxisG.append('text')
+                .attr('class', 'axis-label')
+                .attr('y', 40)
+                .attr('x', innerWidth / 2)
+                .attr('fill', 'black')
+                .text(xAxisLabel);
 
             g.append('g').call(xAxis)
                 .attr('transform', `translate(0,${innerHeight})`);

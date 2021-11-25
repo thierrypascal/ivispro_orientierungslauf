@@ -9,132 +9,150 @@
 </head>
 <body>
 <main>
-<div class="container">
-    <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
-        <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
-            <h1 class="display-4 fw-bold lh-1">Orientierungslauf visualisiert</h1>
-            <p class="lead">Der Orientierungslauf ist noch immer eine eher unbekannte Sportart, hat aber in den letzten
-                Jahren an Aufmerksamkeit gewonnen. Lerne hier, wie sich der Orientierungslauf und seine Läufer:innen
-                über die Zeit verändert haben.</p>
-        </div>
-        <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-            <img class="rounded-lg-3" src="img/ol.jpg" alt="Postenlaterne" width="612">
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h2>Orientierungslauf im Wandel?</h2>
-            <p>Orientierungslauf kennen viele Schweizer:innen aus der Schulzeit und aus dem Militär. Es ist eine der
-                wenigen Sportarten die im schweizerischen Lehrplan aufgeführt und aktiv gefördert werden. Dennoch kennen
-                viele den Unterschied zum richtigen Orientierungslauf nicht. Eine Sportart, bei der es nicht nur auf
-                Geschwindigkeit, sondern auch Geschick ankommt.<br>Da sich in den letzten Jahren Orientierungslauf auch
-                immer stärker in die Öffentlichkeit bringen konnte, zum Beispiel durch landesweite Fehrnsehübertragung
-                von Grossanlässen und medialer Berichterstattung über Spitzensportler, stellte ich zu Beginn dieser
-                Arbeit folgende Hypothese: </p>
-            <p class="hypothesis">Da Orientierungslauf bekannter wurde, stiegen auch die Teilnehmerzahlen.</p>
-            <p>Folgend visualisiere ich die Anzahl Teilnahmen - also vie viele Anmeldungen es an allen Wettkämpfen pro
-                Jahr gab - sowie die Anzahl Teilnehmende - also wie viele Personen zu der Anzahl Anmeldungen geführt
-                haben.</p>
-            <br>
-            <div class="chart-container">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="updateParticipations" autocomplete="off" checked>
-                        Teilnahmen
-                    </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="updateParticipants" autocomplete="off"> Teilnehmende
-                    </label>
-                </div>
-                <div class="svg-container" style="height: 460px; width: 650px">
-                    <svg id="algTeilnehmerzahl"></svg>
-                </div>
-                <div id="ttAlgTeilnehmerzahl"></div>
-                <p>Hier können wir sehen, dass sich die Teilnehmerzahlen und die Anzahl Teilnahmen sehr ähnlich
-                    verhalten, OL-Läufer:innen scheinen also relativ konstant an gleich vielen Wettkämpfen teilzunehmen.
-                    Gut zu sehen ist auch, dass die Anzahl Teilnehmende und Teilnahmen jeweils in den gleichen Jahren
-                    stärker oder schwächer werden. <br><strong class="result">Erkenntnis: Bezüglich der Hypothese kann
-                        nun auch gezeigt
-                        werden, dass trotz steigender medialer Aufmerksamkeit die Anzahl Teilnehmenden nicht signifikant
-                        gestiegen, sondern eher leicht abgenommen hat.</strong><br>Darin nicht zu behandeln ist das Jahr
-                    2020, was als klarer Ausreiser aufgrund der Corona-Pandemie angesehen werden kann. Werden wenig bis
-                    keine Wettkämpfe durchgeführt, können auch die Daten der Teilnehmenden und Teilnahmen nicht gleich
-                    hoch ausfallen wie in den Vorjahren.</p>
+    <div class="container">
+        <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+            <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+                <h1 class="display-4 fw-bold lh-1">Orientierungslauf visualisiert</h1>
+                <p class="lead">Der Orientierungslauf ist noch immer eine eher unbekannte Sportart, hat aber in den
+                    letzten
+                    Jahren an Aufmerksamkeit gewonnen. Lerne hier, wie sich der Orientierungslauf und seine Läufer:innen
+                    über die Zeit verändert haben.</p>
+            </div>
+            <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+                <img class="rounded-lg-3" src="img/ol.jpg" alt="Postenlaterne" width="612">
             </div>
         </div>
     </div>
-</div>
 
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h2>Demografische Verteilung im Orientierungslauf?</h2>
-            <p>Nebst der Anzahl Teilnehmenden und Teilnahmen ist auch sehr interessant zu sehen, in welchem Alter sich
-                die Teilnehmenden befinden und wie viele Wettkämpfe pro Jahr pro Altersgruppe absolviert werden. So
-                sehen wir schön, dass sich über die Jahre konstant zwei Hauptaltersgruppen bilden: einmal die
-                Jugendläufer:innen und einmal die jüngeren Senioren/Seniorinnen. Interessant zu sehen ist, dass es bis
-                ins Hohe Alter noch Teilnehmer gibt. Sowohl ins tiefe als auch ins hohe Alter treten aber
-                Ungenauigkeiten auf. Diese wurden so gut wie möglich aufgereinigt, indem die älteste OL-Persönlichkeit
-                als ältester möglicher Jahrgang und das aktuelle Jahr als tiefst möglicher genommen wurde. Dennoch ist
-                es natürlich schwierig, wenn es Daten von 1-jährigen Läufer:innen gibt. Ab 3 - 5 Jahren nimmt die
-                Genauigkeit wieder zu, da dies ein alter ist, wo es tatsächlich Läufer:innen gibt.</p>
-            <br>
-            <div class="chart-container">
-                <div class="col">
-                    <button id="startAnimationDemograf" type="button" class="btn btn-success">Start</button>
-                    <button id="stopAnimationDemograf" type="button" class="btn btn-danger">Stopp</button>
-                </div>
-                <div class="svg-container" style="height: 1200px; width: 800px">
-                    <svg id="demografischeTeilnehmerzahl"></svg>
-                </div>
-                <div id="ttdemografischeTeilnehmerzahl"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h2>Wie verändern sich die Personen?</h2>
-            <p>Einleitung zum Thema "Wie verändern sich Personen in Bezug auf die Teilnahmemenge? Wie oft hat eine jede
-                Person pro Jahr teilgenommen?"</p>
-            <br>
-            <div class="chart-container">
-                <div class="svg-container" style="height: 460px; width: 650px">
-                    <p><strong>[TESTDATEN - VERKLEINERTER DATENSATZ]</strong></p>
-                    <svg id="teilnahmenProPersonLinie"></svg>
-                </div>
-                <div id="ttteilnahmenProPersonLinie"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h2>Wann sind Läufer:innen am besten?</h2>
-            <p>Einleitung zum Thema "In welchem Jahr erläuft eine Person die meisten besten Ränge? Entwicklung der
-                Person über die Zeit gemessen am erlaufenen Rang."</p>
-            <br>
-            <div class="chart-container">
-                <div class="svg-container" style="height: 460px; width: 650px">
-                    <svg id="leistungsBoxLineChart"></svg>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Orientierungslauf im Wandel?</h2>
+                <p>Orientierungslauf kennen viele Schweizer:innen aus der Schulzeit und aus dem Militär. Es ist eine der
+                    wenigen Sportarten die im schweizerischen Lehrplan aufgeführt und aktiv gefördert werden. Dennoch
+                    kennen
+                    viele den Unterschied zum richtigen Orientierungslauf nicht. Eine Sportart, bei der es nicht nur auf
+                    Geschwindigkeit, sondern auch Geschick ankommt.<br>Da sich in den letzten Jahren Orientierungslauf
+                    auch
+                    immer stärker in die Öffentlichkeit bringen konnte, zum Beispiel durch landesweite
+                    Fehrnsehübertragung
+                    von Grossanlässen und medialer Berichterstattung über Spitzensportler, stellte ich zu Beginn dieser
+                    Arbeit folgende Hypothese: </p>
+                <p class="hypothesis">Da Orientierungslauf bekannter wurde, stiegen auch die Teilnehmerzahlen.</p>
+                <p>Folgend visualisiere ich die Anzahl Teilnahmen - also vie viele Anmeldungen es an allen Wettkämpfen
+                    pro
+                    Jahr gab - sowie die Anzahl Teilnehmende - also wie viele Personen zu der Anzahl Anmeldungen geführt
+                    haben.</p>
+                <br>
+                <div class="chart-container">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="options" id="updateParticipations" autocomplete="off" checked>
+                            Teilnahmen
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="options" id="updateParticipants" autocomplete="off"> Teilnehmende
+                        </label>
+                    </div>
+                    <div class="svg-container" style="height: 460px; width: 650px">
+                        <svg id="algTeilnehmerzahl"></svg>
+                    </div>
+                    <div id="ttAlgTeilnehmerzahl"></div>
+                    <p>Hier können wir sehen, dass sich die Teilnehmerzahlen und die Anzahl Teilnahmen sehr ähnlich
+                        verhalten, OL-Läufer:innen scheinen also relativ konstant an gleich vielen Wettkämpfen
+                        teilzunehmen.
+                        Gut zu sehen ist auch, dass die Anzahl Teilnehmende und Teilnahmen jeweils in den gleichen
+                        Jahren
+                        stärker oder schwächer werden. <br><strong class="result">Erkenntnis: Bezüglich der Hypothese
+                            kann
+                            nun auch gezeigt
+                            werden, dass trotz steigender medialer Aufmerksamkeit die Anzahl Teilnehmenden nicht
+                            signifikant
+                            gestiegen, sondern eher leicht abgenommen hat.</strong><br>Darin nicht zu behandeln ist das
+                        Jahr
+                        2020, was als klarer Ausreiser aufgrund der Corona-Pandemie angesehen werden kann. Werden wenig
+                        bis
+                        keine Wettkämpfe durchgeführt, können auch die Daten der Teilnehmenden und Teilnahmen nicht
+                        gleich
+                        hoch ausfallen wie in den Vorjahren.</p>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Demografische Verteilung im Orientierungslauf?</h2>
+                <p>Neben der Anzahl Teilnehmenden und Teilnahmen ist auch sehr interessant zu sehen, in welchem Alter
+                    sich
+                    die Teilnehmenden befinden und wie viele Wettkämpfe pro Jahr pro Altersgruppe absolviert werden. So
+                    sehen wir schön, dass sich über die Jahre konstant zwei Hauptaltersgruppen bilden: einmal die
+                    Jugendläufer:innen zwischen 10 bis 20 Jahren und einmal die jüngeren Senioren/Seniorinnen zwischen
+                    30 bis 45 Jahren. Beide Gruppen bilden durchgehend einen klaren Peak, die zweite Gruppe verläuft
+                    aber schwächer abnehmend. Interessant zu sehen ist, dass es bis
+                    ins hohe Alter noch Teilnehmer gibt. Sowohl ins Tiefe als auch ins hohe Alter treten aber
+                    Ungenauigkeiten auf. Diese wurden so gut wie möglich aufgereinigt, indem die älteste
+                    OL-Persönlichkeit als ältester möglicher Jahrgang und das aktuelle Jahr als tiefst möglicher
+                    genommen wurde. Dennoch ist es natürlich schwierig, wenn es Daten von 1-jährigen Läufer:innen gibt.
+                    Ab 3 - 5 Jahren nimmt die Genauigkeit wieder zu, da dies ein alter ist, wo es tatsächlich
+                    Läufer:innen gibt.<br><strong class="result">Wir können also klar sagen, dass sich die Verteilung der Anzahl
+                    Teilnehmer sowie der damit ergebenden Teilnahmen über die Zeit konstant in zwei Hauptgruppen
+                    zusammenträgt, einmal die 10 bis 20 Jährigen und einmal die 30 bis 45 Jährigen.</strong></p>
+                <br>
+                <div class="chart-container">
+                    <div class="col">
+                        <button id="startAnimationDemograf" type="button" class="btn btn-success">Start</button>
+                        <button id="stopAnimationDemograf" type="button" class="btn btn-danger">Stopp</button>
+                    </div>
+                    <div class="svg-container" style="height: 1200px; width: 800px">
+                        <svg id="demografischeTeilnehmerzahl"></svg>
+                    </div>
+                    <div id="ttdemografischeTeilnehmerzahl"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Wie verändern sich die Personen?</h2>
+                <p>Einleitung zum Thema "Wie verändern sich Personen in Bezug auf die Teilnahmemenge? Wie oft hat eine
+                    jede
+                    Person pro Jahr teilgenommen?"</p>
+                <br>
+                <div class="chart-container">
+                    <div class="svg-container" style="height: 460px; width: 650px">
+                        <p><strong>[TESTDATEN - VERKLEINERTER DATENSATZ]</strong></p>
+                        <svg id="teilnahmenProPersonLinie"></svg>
+                    </div>
+                    <div id="ttteilnahmenProPersonLinie"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Wann sind Läufer:innen am besten?</h2>
+                <p>Einleitung zum Thema "In welchem Jahr erläuft eine Person die meisten besten Ränge? Entwicklung der
+                    Person über die Zeit gemessen am erlaufenen Rang."</p>
+                <br>
+                <div class="chart-container">
+                    <div class="svg-container" style="height: 460px; width: 650px">
+                        <svg id="leistungsBoxLineChart"></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <!-- Scripts -->
 <script src="lib/d3-7.1.1/package/dist/d3.js"></script>
 <script type="module" src="lib/linq.js-4.0.0/linq.js"></script>
-<script src="lib/lodash.js"></script>
 <script type="module" src="src/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
