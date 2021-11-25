@@ -5,14 +5,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //for each year, each participant should have a line showing the amount of participations per year
     const data = [];
     //TODO: add search functionality to search for specific name
+    //Daten werden aus vorbereitetem csv geladen, nicht direkt aus der Hauptquelle
     d3.csv('./data/teilnahmenProPersonLinie.csv').then((t) => {
         for (let i = 0; i < t.length; i++) {
             data.push(t[i]);
         }
 
         //get data for participations
-        //Welche Datenstruktur wird benötigt?
-        //[name: name, ppY: [{year: 2008, p: y}, {year: 2009, p: y}, ...]], ...]
         const dataOfParticipants = (Enumerable.from(data)
             .select(function (t) {
                 return {name: t.name, dob: t.dob, ppY: [
