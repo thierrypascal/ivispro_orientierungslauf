@@ -205,6 +205,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         }
 
+        //First time loading
         update(dataOfParticipations, 'Teilnahmen', true);
 
         uParticipations.onclick = function () {

@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     let subgroupDataOfParticipants = [];
     let xAxisLabel;
     let yAxisLabel;
-    d3.csv('./data/alleTeilnehmer.csv').then((t) => {
+    d3.csv('./data/demografischeTeilnehmerzahl.csv').then((t) => {
         for (let i = 0; i < t.length; i++) {
             data.push(t[i]);
         }
@@ -20,50 +20,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
         function loadDataOfYear(year) {
             //get data for participations
             dataOfParticipations = Enumerable.from(data)
-                .select(function (t) {
-                    return {year: t.year, name: t.name, dob: t.dob};
-                })
                 .where(function (t) {
-                    return t.year === year && t.dob !== "9999";
+                    return t.year === year;
                 })
-                .groupBy(
-                    function (t) {
-                        return t.dob;
-                    },
-                    function (t) {
-                        return {name: t.name};
-                    },
-                    function (key, grouping) {
-                        return {dob: key, p: grouping.count()};
-                    }
-                ).orderBy(function (t) {
-                    return parseInt(t.dob.toString(), 10);
+                .select(function (t) {
+                    return {dob: t.dob, participations: parseInt(t.participations)};
                 })
                 .toArray();
 
             //get data for participations
             subgroupDataOfParticipants = Enumerable.from(data)
-                .select(function (t) {
-                    return {year: t.year, name: t.name, dob: t.dob};
-                })
                 .where(function (t) {
-                    return t.year === year && t.dob !== "9999";
+                    return t.year === year;
                 })
-                .distinct(function (t) {
-                    return t.year + t.name
-                })
-                .groupBy(
-                    function (t) {
-                        return t.dob;
-                    },
-                    function (t) {
-                        return {name: t.name};
-                    },
-                    function (key, grouping) {
-                        return {dob: key, p: grouping.count()};
-                    }
-                ).orderBy(function (t) {
-                    return parseInt(t.dob.toString(), 10);
+                .select(function (t) {
+                    return {dob: t.dob, participants: parseInt(t.participants)};
                 })
                 .toArray();
 
@@ -158,14 +129,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
             const mousemoveMain = function (event, d) {
                 Tooltip
-                    .html("Teilnahmen: " + d.p + "<br>" + "Jahrgang: " + d.dob)
+                    .html("Teilnahmen: " + d.participations + "<br>" + "Jahrgang: " + d.dob)
                     .style("left", `${event.pageX + 10}px`)
                     .style("top", `${event.pageY}px`)
                     .style("border-color", "#004085")
             }
             const mousemoveSub = function (event, d) {
                 Tooltip
-                    .html("Teilnehmende: " + d.p + "<br>" + "Jahrgang: " + d.dob)
+                    .html("Teilnehmende: " + d.participants + "<br>" + "Jahrgang: " + d.dob)
                     .style("left", `${event.pageX + 10}px`)
                     .style("top", `${event.pageY}px`)
                     .style("border-color", "#ff1b2e")
@@ -183,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .append("rect")
                 .attr("x", xScale(0))
                 .attr("y", d => yScale(d.dob))
-                .attr("width", d => xScale(d.p))
+                .attr("width", d => xScale(d.participations))
                 .attr("height", yScale.bandwidth())
                 .on("mouseover", mouseover)
                 .on("mousemove", mousemoveMain)
@@ -199,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .append("rect")
                 .attr("x", xScale(0))
                 .attr("y", d => yScale(d.dob))
-                .attr("width", d => xScale(d.p))
+                .attr("width", d => xScale(d.participants))
                 .attr("height", yScale.bandwidth())
                 .on("mouseover", mouseover)
                 .on("mousemove", mousemoveSub)
@@ -209,9 +180,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .attr("fill", "#ff1b2e");
         }
 
+        //First time loading
+        loadDataOfYear("2008");
+        update(dataOfParticipations, subgroupDataOfParticipants);
+
         //simple animation handling
         let interval = window.setInterval(loadForEachYear, 5000);
-        let year = 2008;
+        let year = 2009;
 
         function loadForEachYear() {
             if (year <= 2020) {
