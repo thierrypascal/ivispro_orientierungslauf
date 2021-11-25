@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     let subgroupDataOfParticipants = [];
     let xAxisLabel;
     let yAxisLabel;
+    //Daten werden aus vorbereitetem csv geladen, nicht direkt aus der Hauptquelle
     d3.csv('./data/demografischeTeilnehmerzahl.csv').then((t) => {
         for (let i = 0; i < t.length; i++) {
             data.push(t[i]);

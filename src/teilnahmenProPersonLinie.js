@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //for each year, each participant should have a line showing the amount of participations per year
     const data = [];
     //TODO: make it work with the bigger file!
-    d3.csv('./data/alleTeilnehmer_shortTest.csv').then((t) => {
+    d3.csv('./data/teilnahmenProPersonLinie_shortTest.csv').then((t) => {
         for (let i = 0; i < t.length; i++) {
             data.push(t[i]);
         }
@@ -13,64 +13,25 @@ document.addEventListener("DOMContentLoaded", function (event) {
         //get data for participations
         //Welche Datenstruktur wird benötigt?
         //[name: name, ppY: [{year: 2008, p: y}, {year: 2009, p: y}, ...]], ...]
-        const slimData = (Enumerable.from(data)
+        const dataOfParticipants = (Enumerable.from(data)
             .select(function (t) {
-                return {name: t.name, year: t.year, dob: t.dob};
+                return {name: t.name, dob: t.dob, ppY: [
+                    {year: '2008', p: t.p2008},
+                    {year: '2009', p: t.p2009},
+                    {year: '2010', p: t.p2010},
+                    {year: '2011', p: t.p2011},
+                    {year: '2012', p: t.p2012},
+                    {year: '2013', p: t.p2013},
+                    {year: '2014', p: t.p2014},
+                    {year: '2015', p: t.p2015},
+                    {year: '2016', p: t.p2016},
+                    {year: '2017', p: t.p2017},
+                    {year: '2018', p: t.p2018},
+                    {year: '2019', p: t.p2019},
+                    {year: '2020', p: t.p2020},
+                    ]};
             })
             .toArray());
-
-        const dataOfParticipants = (Enumerable.from(slimData)
-            .distinct(function (t) {
-                return t.name
-            })
-            .select(function (t) {
-                return {
-                    name: t.name, dob: t.dob, ppY: Enumerable.from(slimData)
-                        .where(n => n.name === t.name)
-                        .groupBy(
-                            function (t) {
-                                return t.year;
-                            },
-                            function (t) {
-                                return {name: t.name};
-                            },
-                            function (key, grouping) {
-                                return {year: key, p: grouping.count()};
-                            }).toArray()
-                }
-            }).orderBy(function (t) {
-                return parseInt(t.dob.toString(), 10);
-            })
-            .toArray());
-
-        dataOfParticipants.forEach((t) => {
-            //datensatz nach Jahren ohne Teilnahmen ergänzen --> um Linien zeichnen zu können
-            const compYear = [
-                {year: '2008', p: 0},
-                {year: '2009', p: 0},
-                {year: '2010', p: 0},
-                {year: '2011', p: 0},
-                {year: '2012', p: 0},
-                {year: '2013', p: 0},
-                {year: '2014', p: 0},
-                {year: '2015', p: 0},
-                {year: '2016', p: 0},
-                {year: '2017', p: 0},
-                {year: '2018', p: 0},
-                {year: '2019', p: 0},
-                {year: '2020', p: 0},
-            ];
-
-            for (let i = 0; i < compYear.length; i++) {
-                for (let j = 0; j < t.ppY.length; j++) {
-                    if (compYear[i].year === t.ppY[j].year) {
-                        compYear[i].p = t.ppY[j].p;
-                    }
-                }
-            }
-
-            t.ppY = compYear;
-        });
 
         console.log(dataOfParticipants);
 
