@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //create data
     //for each year, each participant should have a line showing the amount of participations per year
     const data = [];
-    //TODO: make it work with the bigger file!
-    d3.csv('./data/teilnahmenProPersonLinie_shortTest.csv').then((t) => {
+    //TODO: add search functionality to search for specific name
+    d3.csv('./data/teilnahmenProPersonLinie.csv').then((t) => {
         for (let i = 0; i < t.length; i++) {
             data.push(t[i]);
         }
@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         //construct graph
         //set dimensions and margin of the graph
         const margin = {top: 10, right: 40, bottom: 20, left: 30},
-            width = 650 - margin.left - margin.right,
-            height = 400 - margin.top - margin.bottom,
+            width = 1000 - margin.left - margin.right,
+            height = 560 - margin.top - margin.bottom,
             innerWidth = width - margin.left - margin.right,
             innerHeight = height - margin.top - margin.bottom;
 
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         //set data range
         xScale.domain([2008, 2020]);
-        yScale.domain([0, 20]);
+        yScale.domain([0, 80]);
 
         //set x, y-Axis
         const yAxisG = g.append('g').call(yAxis);
@@ -141,49 +141,56 @@ document.addEventListener("DOMContentLoaded", function (event) {
         const highlight = (cName, name, dob) => function (event, d) {
             mouseover();
 
-            d3.selectAll(".dot")
-                .transition()
-                .duration(200)
-                .style("fill", "lightgrey")
-                .attr("r", 3)
-
-            d3.selectAll("." + cName + "dot")
-                .transition()
-                .duration(200)
-                .style("fill", color(d))
-                .attr("r", 7)
-
-            d3.selectAll(".path")
-                .transition()
-                .duration(200)
-                .style("stroke", "lightgrey")
-
-            //TODO: move line to front
+            // d3.selectAll(".dot")
+            //     .transition()
+            //     .duration(200)
+            //     .style("fill", "lightgrey")
+            //     .attr("r", 3)
+            //
+            // d3.selectAll("." + cName + "dot")
+            //     .transition()
+            //     .duration(200)
+            //     .style("fill", color(d))
+            //     .attr("r", 7)
+            //
+            // d3.selectAll(".path")
+            //     .transition()
+            //     .duration(200)
+            //     .style("stroke", "lightgrey")
+            //
+            // //TODO: move line to front
             d3.selectAll("." + cName + "line")
                 .transition()
                 .duration(200)
                 .style("stroke", color(d))
                 .attr("stroke-width", 3.0)
+                .attr("opacity", 1)
 
             const sel = d3.select(this);
             sel.moveToFront();
         }
 
         // Highlight the specie that is hovered
-        const doNotHighlight = function (event, d) {
+        const doNotHighlight = (cName) => function (event, d) {
             mouseleave();
 
-            d3.selectAll(".dot")
+            // d3.selectAll(".dot")
+            //     .transition()
+            //     .duration(200)
+            //     .style("fill", d => color(d))
+            //     .attr("r", 5)
+            //
+            // d3.selectAll(".path")
+            //     .transition()
+            //     .duration(200)
+            //     .style("stroke", d => color(d))
+            //     .attr("stroke-width", 1.5)
+            d3.selectAll("." + cName + "line")
                 .transition()
                 .duration(200)
-                .style("fill", d => color(d))
-                .attr("r", 5)
-
-            d3.selectAll(".path")
-                .transition()
-                .duration(200)
-                .style("stroke", d => color(d))
+                .style("stroke", color(d))
                 .attr("stroke-width", 1.5)
+                .attr("opacity", 0.5)
         }
 
         // color palette
@@ -219,12 +226,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 .attr("fill", "none")
                 .attr("stroke", color(d => d))
                 .attr("stroke-width", 1.5)
+                .attr("opacity", 0.5)
                 .attr("d", d3.line()
                     .x(d => xScale(d.year))
                     .y(d => yScale(d.p))
                 )
                 .on("mouseover", highlight(cName, t.name, t.dob))
-                .on("mouseleave", doNotHighlight)
+                .on("mouseleave", doNotHighlight(cName))
                 .on("mousemove", mousemove(t.name, t.dob))
                 //TODO: Tooltip for curve with individual points
                 //verschieben der Punkte um auf dem Grid zu liegen bzw. margin aufzuheben
