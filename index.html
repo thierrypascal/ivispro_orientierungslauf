@@ -96,9 +96,10 @@
                     OL-Persönlichkeit als ältester möglicher Jahrgang und das aktuelle Jahr als tiefst möglicher
                     genommen wurde. Dennoch ist es natürlich schwierig, wenn es Daten von 1-jährigen Läufer:innen gibt.
                     Ab 3 - 5 Jahren nimmt die Genauigkeit wieder zu, da dies ein alter ist, wo es tatsächlich
-                    Läufer:innen gibt.<br><strong class="result">Wir können also klar sagen, dass sich die Verteilung der Anzahl
-                    Teilnehmer sowie der damit ergebenden Teilnahmen über die Zeit konstant in zwei Hauptgruppen
-                    zusammenträgt, einmal die 10 bis 20 Jährigen und einmal die 30 bis 45 Jährigen.</strong></p>
+                    Läufer:innen gibt.<br><strong class="result">Wir können also klar sagen, dass sich die Verteilung
+                        der Anzahl
+                        Teilnehmer sowie der damit ergebenden Teilnahmen über die Zeit konstant in zwei Hauptgruppen
+                        zusammenträgt, einmal die 10 bis 20 Jährigen und einmal die 30 bis 45 Jährigen.</strong></p>
                 <br>
                 <div class="chart-container">
                     <div class="col">
@@ -114,17 +115,36 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" id="contTeilnahmenProPersonLinie">
         <div class="row">
             <div class="col">
                 <h2>Wie verändern sich die Personen?</h2>
-                <p>Einleitung zum Thema "Wie verändern sich Personen in Bezug auf die Teilnahmemenge? Wie oft hat eine
-                    jede
-                    Person pro Jahr teilgenommen?"</p>
+                <p>Dies ist eine explorative Darstellung aller Teilnehmer:innen zwischen 2008 und 2020. Hier können Sie
+                    nach spezifischen Personen suchen und die Anzahl absolvierter Wettkämpfe (in der Schweiz, viele
+                    Läufer:innen absolvieren auch Wettkämpfe im Ausland, gerade Spitzenläufer:innen) einsehen.<br><br>Spannend
+                    hierbei ist nun das Laufverhalten der einzelnen Personen, gerade bei Spitzensportler:innen wie
+                    Simone Niggli-Luder oder den Hubmann Brüdern und wie sich dies nun im Vergleich zur ersten Grafik,
+                    den Anzahl Teilnahmen insgesamt verhält. So sieht man zB. schön, dass 2013 ein Wettkampf schwaches
+                    Jahr war, was sich auch in den Teilnahmen der Läufer:innen widerspiegelt, die an (fast) allen
+                    Wettkämpfen teilnehmen.</p>
                 <br>
                 <div class="chart-container">
                     <div class="svg-container" style="height: 600px; width: 1000px">
                         <svg id="teilnahmenProPersonLinie"></svg>
+                    </div>
+                    <div>
+                        <form id="searchFormTeilnahmenProPersonLinie" class="form-inline"
+                              action="#contTeilnahmenProPersonLinie">
+                            <input id="searchInputTeilnahmenProPersonLinie" class="form-control" type="search"
+                                   placeholder="Suchen: zB. Odermatt" aria-label="Suchen">
+                            <button class="btn btn-outline-success" type="submit">Suchen</button>
+                        </form>
+                        <p><br>Anmerkung: wird die Suche mit einem Leer-String ausgeführt, werden alle 66'907
+                            Teilnehmer:innen aufgeführt. Dadurch wird die Grafik unübersichtlich und die Seite langsam.
+                            Daher empfiehlt sich immer nach einer spezifischen Person zu suchen.<br><br>Einige
+                            Suchvorschläge für <strong>Spitzensportler:innen:</strong></p>
+                            <!-- Todo: Tabelle mit Spitzensportler:innen aufführen-->
+                            <p>- WIP -</p>
                     </div>
                     <div id="ttteilnahmenProPersonLinie"></div>
                 </div>

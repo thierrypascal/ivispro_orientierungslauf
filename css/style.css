@@ -17,6 +17,16 @@ img {
     border-radius: 0.3rem;
 }
 
+.form-inline {
+    display: flex;
+    justify-content: center;
+}
+
+.form-control {
+    margin-right: 0.5rem;
+    width: auto;
+}
+
 .container {
     padding-top: 3rem;
 }
