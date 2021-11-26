@@ -182,18 +182,33 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" id="contLeistungsLineChart">
         <div class="row">
             <div class="col">
                 <h2>Wann sind Läufer:innen am besten?</h2>
-                <p>Einleitung zum Thema "In welchem Jahr erläuft eine Person die meisten besten Ränge? Entwicklung der
-                    Person über die Zeit gemessen am erlaufenen Rang."</p>
+                <p>Wir haben nun gesehen, wie sich die Anzahl bestrittener Wettkämpfe pro Teilnehmer:in über die Zeit
+                    verändert. Jetzt beobachten wir, ob und wie sich diese Person im Rang verändert. Beispielsweise
+                    müsste ein Spitzenläufer/eine Spitzenläuferin mit vielen Teilnahmen auch oft gute Ränge erzielen.
+                    Dafür wurden die erzielten Ränge pro Person pro Jahr gemittelt, Rang 1 ist jeweils das Beste, Rang 0
+                    ist die darstellung für nicht teilgenommen/keine Ränge in diesem Jahr erlaufen.</p>
                 <br>
                 <div class="chart-container">
-                    <p><strong>- WIP -</strong></p>
-                    <div class="svg-container" style="height: 460px; width: 650px">
+                    <div class="svg-container" style="height: 600px; width: 1000px">
                         <svg id="leistungsLineChart"></svg>
                     </div>
+                    <div>
+                        <form id="searchFormLeistungsLineChart" class="form-inline"
+                              action="#contLeistungsLineChart">
+                            <input id="searchInputLeistungsLineChart" class="form-control" type="search"
+                                   placeholder="Suchen: zB. Odermatt" aria-label="Suchen">
+                            <button class="btn btn-outline-success" type="submit">Suchen</button>
+                        </form>
+                        <p><br>Anmerkung: wird die Suche mit einem Leer-String ausgeführt, werden alle 66'907
+                            Teilnehmer:innen aufgeführt. Dadurch wird die Grafik unübersichtlich und die Seite langsam.
+                            Daher empfiehlt sich immer nach einer spezifischen Person zu suchen.
+                        </p>
+                    </div>
+                    <div id="ttleistungsLineChart"></div>
                 </div>
             </div>
         </div>
@@ -203,9 +218,9 @@
         <div class="row">
             <div class="col">
                 <h2>Fazit</h2>
-                <p>Um die ganze Thematik abzuschliessen - Der Orietierungslauf als Sportart wurde zwar stärker in den
-                    Medien angesprochen (dies wäre für eine zukünftige Arbeit interessant zu untersuchen), die
-                    Teilnahmen haben aber nicht zugenommen. Mit leichter Variation haben diese über die Jahre eher
+                <p>Um die ganze Thematik abzuschliessen - <strong class="result">Der Orietierungslauf als Sportart wurde zwar stärker in den
+                    Medien angesprochen</strong> (dies wäre für eine zukünftige Arbeit interessant zu untersuchen), <strong class="result">die
+                    Teilnahmen haben aber nicht zugenommen.</strong> Mit leichter Variation haben diese über die Jahre eher
                     abgenommen, Pandemie ausgeschlossen. Was sich jedoch stark verändert hat sind die Teilnehmer:innen.
                     Jeder und jede hat ein individuelles Bild der Teilnahmemenge über die Jahre, wobei neben der Anzahl
                     organisierter Veranstaltungen natürlich auch eine Vielzahl weiterer Faktoren wie die Gesundheit mit
@@ -213,13 +228,19 @@
                 <h5>
                     Weiterführende Links:
                 </h5>
-                <p>Wollen Sie mehr erfahren, weiter in die Welt des Orientierungslauf eintauchen oder selbst damit beginnen, hier ein paar hilfreiche Links:</p>
+                <p>Wollen Sie mehr erfahren, weiter in die Welt des Orientierungslauf eintauchen oder selbst damit
+                    beginnen, hier ein paar hilfreiche Links:</p>
                 <ul>
-                    <li><a href="https://www.swiss-orienteering.ch/de/" target="_blank" rel="noopener noreferrer">SOLV/Swiss Orienteering</a></li>
-                    <li><a href="https://www.o-l.ch/cgi-bin/results" target="_blank" rel="noopener noreferrer">SOLV Ranglisten</a></li>
-                    <li><a href="https://www.o-l.ch/cgi-bin/pliste" target="_blank" rel="noopener noreferrer">SOLV Jahrespunkteliste</a></li>
-                    <li><a href="https://de.wikipedia.org/wiki/Simone_Niggli-Luder" target="_blank" rel="noopener noreferrer">OL-Legende Simone Niggli-Luder</a></li>
-                    <li><a href="https://www.youtube.com/watch?v=mlSElks0YJ0" target="_blank" rel="noopener noreferrer">OL-Legende Adolf Kempf</a></li>
+                    <li><a href="https://www.swiss-orienteering.ch/de/" target="_blank" rel="noopener noreferrer">SOLV/Swiss
+                        Orienteering</a></li>
+                    <li><a href="https://www.o-l.ch/cgi-bin/results" target="_blank" rel="noopener noreferrer">SOLV
+                        Ranglisten</a></li>
+                    <li><a href="https://www.o-l.ch/cgi-bin/pliste" target="_blank" rel="noopener noreferrer">SOLV
+                        Jahrespunkteliste</a></li>
+                    <li><a href="https://de.wikipedia.org/wiki/Simone_Niggli-Luder" target="_blank"
+                           rel="noopener noreferrer">OL-Legende Simone Niggli-Luder</a></li>
+                    <li><a href="https://www.youtube.com/watch?v=mlSElks0YJ0" target="_blank" rel="noopener noreferrer">OL-Legende
+                        Adolf Kempf</a></li>
                 </ul>
                 <br>
                 <br>

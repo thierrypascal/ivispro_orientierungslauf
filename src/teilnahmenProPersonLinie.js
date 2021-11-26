@@ -220,6 +220,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     .attr("stroke-width", 2.0)
                     .attr("opacity", 0.4)
                     .attr("d", d3.line()
+                        .curve(d3.curveBasis)
                         .x(d => xScale(d.year))
                         .y(d => yScale(d.p))
                     )
