@@ -9,3 +9,4 @@ d3.selection.prototype.moveToFront = function() {
 import './algTeilnehmerzahl.js';
 import './demografischeTeilnehmerzahl.js';
 import './teilnahmenProPersonLinie.js';
+import './leistungsLineChart.js';

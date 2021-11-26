@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //for each year, each participant should have a line showing the amount of participations per year
     const data = [];
     let dataOfParticipants = [];
-    //TODO: add search functionality to search for specific name
     //Daten werden aus vorbereitetem csv geladen, nicht direkt aus der Hauptquelle
     d3.csv('./data/teilnahmenProPersonLinie.csv').then((t) => {
         for (let i = 0; i < t.length; i++) {
@@ -16,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
 
         //get data for participations
-        function loadDataOfYear(search) {
+        function loadDataWithFilter(search) {
             if (search !== null && search !== "") {
                 dataOfParticipants = (Enumerable.from(data)
                     .where(function (t) {
@@ -176,13 +175,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
 
             // Highlight the specie that is hovered
-            const highlight = (cName, name, dob) => function (event, d) {
+            const highlight = (cName) => function (event, d) {
                 mouseover();
 
                 d3.selectAll("." + cName + "line")
                     .transition()
                     .duration(200)
-                    .style("stroke", color(d))
+                    .style("stroke", color(cName))
                     .attr("stroke-width", 3.0)
                     .attr("opacity", 1)
 
@@ -198,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 d3.selectAll("." + cName + "line")
                     .transition()
                     .duration(200)
-                    .style("stroke", color(d))
+                    .style("stroke", color(cName))
                     .attr("stroke-width", 2)
                     .attr("opacity", 0.4)
             }
@@ -217,14 +216,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     .datum(t.ppY)
                     .attr("class", "path " + cName + "line")
                     .attr("fill", "none")
-                    .attr("stroke", color(d => d))
+                    .attr("stroke", color(cName))
                     .attr("stroke-width", 2.0)
                     .attr("opacity", 0.4)
                     .attr("d", d3.line()
                         .x(d => xScale(d.year))
                         .y(d => yScale(d.p))
                     )
-                    .on("mouseover", highlight(cName, t.name, t.dob))
+                    .on("mouseover", highlight(cName))
                     .on("mouseleave", doNotHighlight(cName))
                     .on("mousemove", mousemove(t.name, t.dob))
                     //TODO: Tooltip for curve with individual points
@@ -234,12 +233,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
 
         //init load of graph
-        loadDataOfYear("Odermatt");
+        loadDataWithFilter("Odermatt");
         update(dataOfParticipants);
 
         searchForm.onsubmit = function (e) {
             //Todo: search variant with dob groups
-            loadDataOfYear(searchInput.value.toString());
+            loadDataWithFilter(searchInput.value.toString());
             update(dataOfParticipants);
         }
     });
