@@ -209,8 +209,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
 
             // color palette
-            const color = d3.scaleOrdinal()
-                .range(['#e41a1c', '#377eb8', '#4daf4a', '#984ea3', '#ff7f00', '#ffff33', '#a65628', '#f781bf', '#999999'])
+            const color = d3.scaleOrdinal(d3.schemeCategory10);
 
             //bind data to graph
             //create line of participations

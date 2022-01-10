@@ -27,6 +27,11 @@ img {
     width: auto;
 }
 
+.axis-label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
 .container {
     padding-top: 3rem;
 }
